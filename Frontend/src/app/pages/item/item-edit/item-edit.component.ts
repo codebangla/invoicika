@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { ItemService } from 'src/app/services/item.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import {Store} from "@ngxs/store";
 
 @Component({
   selector: 'app-item-edit',
@@ -13,14 +14,15 @@ export class ItemEditComponent implements OnInit {
   editItemForm: FormGroup;
   itemId!: string;
   loading = true;
-  private user_id = '9b0e09a7-31d6-4897-8a3e-cc4cf4d1433a';
+  private user_id = this.store.selectSnapshot(state => state.auth.current.userId);
 
   constructor(
-    private fb: NonNullableFormBuilder,
-    private itemService: ItemService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private message: NzMessageService
+    private readonly store: Store,
+    private readonly fb: NonNullableFormBuilder,
+    private readonly itemService: ItemService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly message: NzMessageService
   ) {
     this.editItemForm = this.fb.group({
       name: new FormControl<string | null>(null, [Validators.required]),

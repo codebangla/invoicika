@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {
   FormControl,
   FormGroup,
   NonNullableFormBuilder,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { ItemService } from 'src/app/services/item.service';
+import {Router} from '@angular/router';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {ItemService} from 'src/app/services/item.service';
+import {Store} from "@ngxs/store";
 
 @Component({
   selector: 'app-item-add',
@@ -17,14 +18,14 @@ import { ItemService } from 'src/app/services/item.service';
 export class ItemAddComponent {
   addItemForm: FormGroup;
 
-  // Hardcoded user_id for now, will be dynamic later
-  private user_id = '9b0e09a7-31d6-4897-8a3e-cc4cf4d1433a';
+  private user_id = this.store.selectSnapshot(state => state.auth.current.userId);
 
   constructor(
-    private fb: NonNullableFormBuilder,
-    private itemService: ItemService,
-    private router: Router,
-    private message: NzMessageService
+    private readonly store: Store,
+    private readonly fb: NonNullableFormBuilder,
+    private readonly itemService: ItemService,
+    private readonly router: Router,
+    private readonly message: NzMessageService
   ) {
     this.addItemForm = this.fb.group({
       name: new FormControl<string | null>(null, [Validators.required]),
@@ -42,7 +43,7 @@ export class ItemAddComponent {
       const newItem = {
         // Generate a new GUID for itemId
         ...this.addItemForm.value,
-        user_id: this.user_id, // Hardcoded user_id
+        user_id: this.user_id,
       };
 
       this.itemService.createItem(newItem).subscribe({

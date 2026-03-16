@@ -3,11 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginComponent } from './login.component';
-import { NzFormModule } from 'ng-zorro-antd/form';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzCardModule } from 'ng-zorro-antd/card';
+import { NgZorroModule } from '@modules';
 
 @NgModule({
   declarations: [
@@ -16,11 +13,8 @@ import { NzCardModule } from 'ng-zorro-antd/card';
   imports: [
     CommonModule,
     LoginRoutingModule,
-    NzFormModule,
     ReactiveFormsModule,
-    NzButtonModule,
-    NzInputModule,
-    NzCardModule
+    NgZorroModule
   ]
 })
 export class LoginModule { }

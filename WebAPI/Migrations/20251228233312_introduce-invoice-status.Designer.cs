@@ -2,9 +2,9 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WebAPI.Data;
 
 #nullable disable
@@ -12,32 +12,36 @@ using WebAPI.Data;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(InvoicikaDbContext))]
-    [Migration("20240909042039_InitialMigrate")]
-    partial class InitialMigrate
+    [Migration("20251228233312_introduce-invoice-status")]
+    partial class introduceinvoicestatus
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.33")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("ProductVersion", "10.0.0")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("CustomerInvoice", b =>
                 {
                     b.Property<Guid>("CustomerInvoiceId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("Customer_id")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("InvoiceDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<decimal>("SubTotalAmount")
                         .HasColumnType("decimal(10,2)");
@@ -46,16 +50,16 @@ namespace WebAPI.Migrations
                         .HasColumnType("decimal(10,2)");
 
                     b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("User_id")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<decimal>("VatAmount")
                         .HasColumnType("decimal(10,2)");
 
                     b.Property<Guid>("Vat_id")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("CustomerInvoiceId");
 
@@ -72,47 +76,108 @@ namespace WebAPI.Migrations
                 {
                     b.Property<Guid>("CustomerId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Address")
                         .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
+                        .HasColumnType("character varying(512)");
 
                     b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("CustomerId");
 
                     b.ToTable("Customers");
                 });
 
+            modelBuilder.Entity("WebAPI.Models.CustomerInvoiceGroupItemLine", b =>
+                {
+                    b.Property<Guid>("GroupItemLineId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CustomerInvoiceGroupLine_id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("Item_id")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.HasKey("GroupItemLineId");
+
+                    b.HasIndex("CustomerInvoiceGroupLine_id");
+
+                    b.HasIndex("Item_id");
+
+                    b.ToTable("CustomerInvoiceGroupItemLines");
+                });
+
+            modelBuilder.Entity("WebAPI.Models.CustomerInvoiceGroupLine", b =>
+                {
+                    b.Property<Guid>("InvoiceGroupLineId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CustomerInvoice_id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1024)
+                        .HasColumnType("character varying(1024)");
+
+                    b.Property<decimal>("SubTotalAmount")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("VatAmount")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.HasKey("InvoiceGroupLineId");
+
+                    b.HasIndex("CustomerInvoice_id");
+
+                    b.ToTable("CustomerInvoiceGroupLines");
+                });
+
             modelBuilder.Entity("WebAPI.Models.CustomerInvoiceLine", b =>
                 {
                     b.Property<Guid>("InvoiceLineId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("CustomerInvoice_id")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("Item_id")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10,2)");
@@ -133,34 +198,34 @@ namespace WebAPI.Migrations
                 {
                     b.Property<Guid>("ItemId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)");
+                        .HasColumnType("character varying(1024)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<decimal>("PurchasePrice")
                         .HasColumnType("decimal(10,2)");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<decimal>("SalePrice")
                         .HasColumnType("decimal(10,2)");
 
                     b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("User_id")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("ItemId");
 
@@ -169,22 +234,68 @@ namespace WebAPI.Migrations
                     b.ToTable("Items");
                 });
 
+            modelBuilder.Entity("WebAPI.Models.ItemGroup", b =>
+                {
+                    b.Property<Guid>("ItemGroupId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1024)
+                        .HasColumnType("character varying(1024)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<Guid>("User_id")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("ItemGroupId");
+
+                    b.HasIndex("User_id");
+
+                    b.ToTable("ItemGroups");
+                });
+
+            modelBuilder.Entity("WebAPI.Models.ItemGroupItem", b =>
+                {
+                    b.Property<Guid>("ItemGroupItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ItemGroup_id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("Item_id")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("ItemGroupItemId");
+
+                    b.HasIndex("ItemGroup_id");
+
+                    b.HasIndex("Item_id");
+
+                    b.ToTable("ItemGroupItems");
+                });
+
             modelBuilder.Entity("WebAPI.Models.Role", b =>
                 {
                     b.Property<Guid>("RoleId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("RoleName")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("RoleId");
 
@@ -195,34 +306,34 @@ namespace WebAPI.Migrations
                 {
                     b.Property<Guid>("UserId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("PhotoUrl")
                         .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
+                        .HasColumnType("character varying(2048)");
 
                     b.Property<Guid>("Role_id")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("UserId");
 
@@ -235,17 +346,17 @@ namespace WebAPI.Migrations
                 {
                     b.Property<Guid>("VatId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("Percentage")
                         .HasColumnType("decimal(4,2)");
 
                     b.HasKey("VatId");
 
-                    b.ToTable("Vats");
+                    b.ToTable("VATs");
                 });
 
             modelBuilder.Entity("CustomerInvoice", b =>
@@ -273,6 +384,36 @@ namespace WebAPI.Migrations
                     b.Navigation("User");
 
                     b.Navigation("VAT");
+                });
+
+            modelBuilder.Entity("WebAPI.Models.CustomerInvoiceGroupItemLine", b =>
+                {
+                    b.HasOne("WebAPI.Models.CustomerInvoiceGroupLine", "CustomerInvoiceGroupLine")
+                        .WithMany("GroupItemLines")
+                        .HasForeignKey("CustomerInvoiceGroupLine_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebAPI.Models.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("Item_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CustomerInvoiceGroupLine");
+
+                    b.Navigation("Item");
+                });
+
+            modelBuilder.Entity("WebAPI.Models.CustomerInvoiceGroupLine", b =>
+                {
+                    b.HasOne("CustomerInvoice", "CustomerInvoice")
+                        .WithMany("CustomerInvoiceGroupLines")
+                        .HasForeignKey("CustomerInvoice_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CustomerInvoice");
                 });
 
             modelBuilder.Entity("WebAPI.Models.CustomerInvoiceLine", b =>
@@ -305,6 +446,36 @@ namespace WebAPI.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("WebAPI.Models.ItemGroup", b =>
+                {
+                    b.HasOne("WebAPI.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("User_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WebAPI.Models.ItemGroupItem", b =>
+                {
+                    b.HasOne("WebAPI.Models.ItemGroup", "ItemGroup")
+                        .WithMany("ItemGroupItems")
+                        .HasForeignKey("ItemGroup_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebAPI.Models.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("Item_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+
+                    b.Navigation("ItemGroup");
+                });
+
             modelBuilder.Entity("WebAPI.Models.User", b =>
                 {
                     b.HasOne("WebAPI.Models.Role", "Role")
@@ -318,6 +489,8 @@ namespace WebAPI.Migrations
 
             modelBuilder.Entity("CustomerInvoice", b =>
                 {
+                    b.Navigation("CustomerInvoiceGroupLines");
+
                     b.Navigation("CustomerInvoiceLines");
                 });
 
@@ -326,9 +499,19 @@ namespace WebAPI.Migrations
                     b.Navigation("CustomerInvoices");
                 });
 
+            modelBuilder.Entity("WebAPI.Models.CustomerInvoiceGroupLine", b =>
+                {
+                    b.Navigation("GroupItemLines");
+                });
+
             modelBuilder.Entity("WebAPI.Models.Item", b =>
                 {
                     b.Navigation("CustomerInvoiceLines");
+                });
+
+            modelBuilder.Entity("WebAPI.Models.ItemGroup", b =>
+                {
+                    b.Navigation("ItemGroupItems");
                 });
 
             modelBuilder.Entity("WebAPI.Models.Role", b =>

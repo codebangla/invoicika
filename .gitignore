@@ -57,3 +57,4 @@ WebAPI/.vs/
 WebAPI/publish/
 WebAPI/*.pubxml
 WebAPI/*.pubxml.user
+.idea

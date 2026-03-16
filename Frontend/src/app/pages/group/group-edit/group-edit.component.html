@@ -1,0 +1,55 @@
+<nz-page-header
+  class="site-page-header"
+  (nzBack)="onBack()"
+  nzBackIcon
+  nzTitle="Edit Item Group">
+</nz-page-header>
+
+<nz-spin [nzSpinning]="loading">
+  <form nz-form [formGroup]="editGroupForm" (ngSubmit)="submitForm()">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>Title</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="titleErrorTpl">
+        <input nz-input formControlName="title" placeholder="Enter group title" />
+        <ng-template #titleErrorTpl let-control>
+          <ng-container *ngIf="control.errors?.['required']">
+            Please input the group title!
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7">Description</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback>
+        <textarea nz-input formControlName="description" rows="3" placeholder="Enter description"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>Items</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="itemsErrorTpl">
+        <nz-select
+          formControlName="itemIds"
+          nzMode="multiple"
+          nzPlaceHolder="Select items"
+          [nzLoading]="loadingItems"
+        >
+          <nz-option *ngFor="let item of listOfItems" [nzLabel]="item.name" [nzValue]="item.itemId"></nz-option>
+        </nz-select>
+        <ng-template #itemsErrorTpl let-control>
+          <ng-container *ngIf="control.errors?.['required']">
+            Please select at least one item!
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control [nzOffset]="7" [nzSpan]="12">
+        <button nz-button nzType="primary" [disabled]="!editGroupForm.valid">Save</button>
+        <button nz-button (click)="resetForm($event)">Reset</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-spin>

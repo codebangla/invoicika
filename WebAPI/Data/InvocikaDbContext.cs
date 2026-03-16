@@ -12,9 +12,13 @@ namespace WebAPI.Data
         public DbSet<CustomerInvoice> CustomerInvoices { get; set; }
         public DbSet<CustomerInvoiceLine> CustomerInvoiceLines { get; set; }
         public DbSet<Item> Items { get; set; }
+        public DbSet<ItemGroup> ItemGroups { get; set; }
+        public DbSet<ItemGroupItem> ItemGroupItems { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<VAT> VATs { get; set; }
+        public DbSet<CustomerInvoiceGroupLine> CustomerInvoiceGroupLines { get; set; }
+        public DbSet<CustomerInvoiceGroupItemLine> CustomerInvoiceGroupItemLines { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

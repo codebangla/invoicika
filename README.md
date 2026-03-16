@@ -1,8 +1,8 @@
-![Invoicika](https://i.imgur.com/8AF7yiL.png)
+![Invoicika](https://im.ages.io/zxV6jintl3)
 
 # **Invoicika**
 
-Invoicika is an advanced invoice management system built with Angular 16, ASP.NET Core Web API 6.0, and SQL Server. This system provides full-fledged invoicing capabilities, including unlimited invoice creation, customer management, PDF generation, and more. The frontend is built with Angular and utilizes NG-Zorro UI components for a modern, responsive design.
+Invoicika is an advanced invoice management system built with Angular 16, ASP.NET Core Web API 10.0, and PostgreSQL. This system provides full-fledged invoicing capabilities, including unlimited invoice creation, customer management, PDF generation, and more. The frontend is built with Angular and utilizes NG-Zorro UI components for a modern, responsive design.
 
 ## Features
 
@@ -15,15 +15,15 @@ Invoicika is an advanced invoice management system built with Angular 16, ASP.NE
 - **Sign Up & Profile Management**: Users can sign up and manage their profile.
 - **Image Upload**: Upload and manage profile pictures and invoice logos.
 - **VAT Management**: Handle VAT for customer invoices.
-- **Database**: Built to work with SQL Server.
+- **Database**: Built to work with PostgreSQL.
 
 ![Description](https://i.imgur.com/uDmUb5U.png)
 
 ## Technologies Used
 
 - **Frontend**: Angular with NG-Zorro (Responsive UI components).
-- **Backend**: ASP.NET Core Web API 6.0 (Robust and scalable API layer).
-- **Database**: SQL Server (Code First Migration).
+- **Backend**: ASP.NET Core Web API 10.0 (Robust and scalable API layer).
+- **Database**: PostgreSQL (Code First Migration).
 
 ![Description](https://i.imgur.com/0dwmGY1.png)
 
@@ -32,8 +32,8 @@ Invoicika is an advanced invoice management system built with Angular 16, ASP.NE
 ### Prerequisites
 
 - **Node.js** (For Angular)
-- **SQL Server** (For database)
-- **.NET 6.0 SDK** (For ASP.NET Core)
+- **PostgreSQL** (For database)
+- **.NET 10.0 SDK** (For ASP.NET Core)
 
 ### Installation
 
@@ -59,16 +59,16 @@ Invoicika is an advanced invoice management system built with Angular 16, ASP.NE
    dotnet restore
    ```
 
-4. **Database Setup (SQL Server)**:
+4. **Database Setup (PostgreSQL)**:
 
-   - Ensure SQL Server is installed and running.
-   - Update the connection strings in `appsettings.json` to configure your SQL Server database.
+   - Ensure PostgreSQL is installed and running.
+   - Update the connection strings in `appsettings.json` to configure your PostgreSQL database.
 
      Example:
 
      ```json
      "ConnectionStrings": {
-       "SqlServerConnection": "Your SQL Server connection string"
+       "DefaultConnection": "Your PostgreSQL Server connection string"
      }
      ```
 

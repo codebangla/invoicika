@@ -5,21 +5,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebAPI.Migrations
 {
-    public partial class InitialMigrate : Migration
+    /// <inheritdoc />
+    public partial class Initial : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
                 name: "Customers",
                 columns: table => new
                 {
-                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    CustomerId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Address = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    CreationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -30,10 +32,10 @@ namespace WebAPI.Migrations
                 name: "Roles",
                 columns: table => new
                 {
-                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RoleName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    RoleId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RoleName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -41,30 +43,30 @@ namespace WebAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Vats",
+                name: "VATs",
                 columns: table => new
                 {
-                    VatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Percentage = table.Column<decimal>(type: "decimal(4,2)", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    VatId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Percentage = table.Column<decimal>(type: "numeric(4,2)", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Vats", x => x.VatId);
+                    table.PrimaryKey("PK_VATs", x => x.VatId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    EmailAddress = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    PhotoUrl = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Role_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Username = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    EmailAddress = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    PhotoUrl = table.Column<string>(type: "character varying(2048)", maxLength: 2048, nullable: true),
+                    PasswordHash = table.Column<string>(type: "text", nullable: false),
+                    Role_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -81,16 +83,16 @@ namespace WebAPI.Migrations
                 name: "CustomerInvoices",
                 columns: table => new
                 {
-                    CustomerInvoiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Customer_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    User_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    InvoiceDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    SubTotalAmount = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    VatAmount = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    TotalAmount = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    Vat_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CustomerInvoiceId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Customer_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    User_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    InvoiceDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SubTotalAmount = table.Column<decimal>(type: "numeric(10,2)", nullable: false),
+                    VatAmount = table.Column<decimal>(type: "numeric(10,2)", nullable: false),
+                    TotalAmount = table.Column<decimal>(type: "numeric(10,2)", nullable: false),
+                    Vat_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -108,9 +110,9 @@ namespace WebAPI.Migrations
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CustomerInvoices_Vats_Vat_id",
+                        name: "FK_CustomerInvoices_VATs_Vat_id",
                         column: x => x.Vat_id,
-                        principalTable: "Vats",
+                        principalTable: "VATs",
                         principalColumn: "VatId",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -119,15 +121,15 @@ namespace WebAPI.Migrations
                 name: "Items",
                 columns: table => new
                 {
-                    ItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
-                    PurchasePrice = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    SalePrice = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    User_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    ItemId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Description = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true),
+                    PurchasePrice = table.Column<decimal>(type: "numeric(10,2)", nullable: false),
+                    SalePrice = table.Column<decimal>(type: "numeric(10,2)", nullable: false),
+                    Quantity = table.Column<int>(type: "integer", nullable: false),
+                    User_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -144,11 +146,11 @@ namespace WebAPI.Migrations
                 name: "CustomerInvoiceLines",
                 columns: table => new
                 {
-                    InvoiceLineId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CustomerInvoice_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Item_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Quantity = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
+                    InvoiceLineId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CustomerInvoice_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Item_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Quantity = table.Column<decimal>(type: "numeric(10,2)", nullable: false),
+                    Price = table.Column<decimal>(type: "numeric(10,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -203,6 +205,7 @@ namespace WebAPI.Migrations
                 column: "Role_id");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
@@ -218,7 +221,7 @@ namespace WebAPI.Migrations
                 name: "Customers");
 
             migrationBuilder.DropTable(
-                name: "Vats");
+                name: "VATs");
 
             migrationBuilder.DropTable(
                 name: "Users");

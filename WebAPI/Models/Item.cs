@@ -32,7 +32,7 @@ namespace WebAPI.Models
        
         [ForeignKey(nameof(User_id))]
         [JsonIgnore] 
-        public virtual User User { get; set; }
+        public virtual User? User { get; set; }
 
         [Required]
         public DateTime CreationDate { get; set; } = DateTime.UtcNow;

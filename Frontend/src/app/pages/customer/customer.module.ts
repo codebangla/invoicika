@@ -5,20 +5,7 @@ import { CustomerListComponent } from './customer-list/customer-list.component';
 import { CustomerAddComponent } from './customer-add/customer-add.component';
 import { CustomerEditComponent } from './customer-edit/customer-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NzTableModule } from 'ng-zorro-antd/table';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzSpaceModule } from 'ng-zorro-antd/space';
-import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
-import { NzNotificationModule } from 'ng-zorro-antd/notification';
-import { NzDividerModule } from 'ng-zorro-antd/divider';// For displaying notifications
-import { NzMessageModule } from 'ng-zorro-antd/message';
-import { NzModalModule } from 'ng-zorro-antd/modal';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
-
-
+import { NgZorroModule } from '@modules';
 
 @NgModule({
   declarations: [
@@ -30,19 +17,8 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
     CommonModule,
     CustomerRoutingModule,
     ReactiveFormsModule,
-    NzTableModule,
-    NzIconModule,
-    NzSpaceModule,
-    NzDividerModule,
-    NzPageHeaderModule,
-    NzButtonModule,
-    NzInputModule,
-    NzFormModule,
-    NzNotificationModule,
-    NzMessageModule,
-    NzSpinModule,
+    NgZorroModule,
     FormsModule,
-    NzModalModule
 ]
 })
 export class CustomerModule { }

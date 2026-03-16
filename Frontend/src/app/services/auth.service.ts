@@ -46,6 +46,7 @@ export class AuthService {
     username: string | null;
     userId: string | null;
     role: string | null;
+    expiration: number | null;
   } {
     const token = this.getToken();
     if (token) {
@@ -55,6 +56,7 @@ export class AuthService {
           username: decodedToken?.unique_name || null,
           userId: decodedToken?.nameid || null,
           role: decodedToken?.role || null,
+          expiration: decodedToken?.exp || null
         };
       } catch (error) {
         console.error('Error decoding token:', error);
@@ -62,6 +64,7 @@ export class AuthService {
           username: null,
           userId: null,
           role: null,
+          expiration: null
         };
       }
     }
@@ -69,6 +72,7 @@ export class AuthService {
       username: null,
       userId: null,
       role: null,
+      expiration: null
     };
   }
 

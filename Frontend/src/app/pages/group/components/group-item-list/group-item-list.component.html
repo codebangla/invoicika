@@ -1,0 +1,26 @@
+<nz-table
+  #itemsTable
+  [nzData]="items"
+  nzBordered
+  [nzFrontPagination]="true"
+  [nzPageSize]="5"
+>
+  <thead>
+    <tr>
+      <th nzColumnKey="name">Item Name</th>
+      <th nzColumnKey="description">Description</th>
+      <th nzColumnKey="purchasePrice">Purchase Price</th>
+      <th nzColumnKey="salePrice">Sale Price</th>
+      <th nzColumnKey="quantity">Quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of itemsTable.data">
+      <td>{{ item.name }}</td>
+      <td>{{ item.description }}</td>
+      <td>{{ item.purchasePrice | currency }}</td>
+      <td>{{ item.salePrice | currency }}</td>
+      <td>{{ item.quantity }}</td>
+    </tr>
+  </tbody>
+</nz-table>

@@ -7,7 +7,7 @@
   <nz-page-header-extra>
     <nz-space>
       <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-        <input type="text" nz-input placeholder="Search" />
+        <input type="text" nz-input placeholder="Search"/>
       </nz-input-group>
       <ng-template #suffixIconButton>
         <button nz-button nzSearch>
@@ -30,7 +30,7 @@
         nzType="primary"
         [routerLink]="['/invoices/add']"
       >
-      <span nz-icon nzType="plus"></span>
+        <span nz-icon nzType="plus"></span>
         Add Invoice
       </button>
     </nz-space>
@@ -49,50 +49,56 @@
   nzBordered
 >
   <thead>
-    <tr>
-      <th nzColumnKey="customerInvoiceId" nzShowSort>Invoice ID</th>
-      <th nzColumnKey="customer_id" nzShowSort>Customer Name</th>
-      <th nzColumnKey="invoiceDate" nzShowSort>Invoice Date</th>
-      <th nzColumnKey="totalAmount" nzShowSort>Total Amount</th>
-      <th nzColumnKey="totalAmount" nzShowSort>By</th>
-      <th nzColumnKey="actions">Actions</th>
-    </tr>
+  <tr>
+    <th nzColumnKey="customerInvoiceId" nzShowSort>Invoice ID</th>
+    <th nzColumnKey="customer_id" nzShowSort>Customer Name</th>
+    <th nzColumnKey="invoiceDate" nzShowSort>Invoice Date</th>
+    <th nzColumnKey="totalAmount" nzShowSort>Total Amount</th>
+    <th nzColumnKey="totalAmount" nzShowSort>By</th>
+    <th nzColumnKey="status">
+      Status
+    </th>
+    <th nzColumnKey="actions">Actions</th>
+  </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let invoice of listOfInvoices">
-      <td>{{ invoice.customerInvoiceId }}</td>
-      <td>{{ getCustomerName(invoice.customer_id) }}</td>
-      <td>{{ invoice.invoiceDate | date }}</td>
-      <td>{{ invoice.totalAmount | currency }}</td>
-      <td>{{ getUserName(invoice.user_id)}}</td>
-      <td>
-        <a [routerLink]="['/invoices/show', invoice.customerInvoiceId]">
+  <tr *ngFor="let invoice of listOfInvoices">
+    <td>{{ invoice.customerInvoiceId }}</td>
+    <td>{{ getCustomerName(invoice.customer_id) }}</td>
+    <td>{{ invoice.invoiceDate | date }}</td>
+    <td>{{ invoice.totalAmount | currency }}</td>
+    <td>{{ getUserName(invoice.user_id) }}</td>
+    <td>
+      <invoice-status [status]="invoice.status"></invoice-status>
+    </td>
+    <td>
+      <a [routerLink]="['/invoices/show', invoice.customerInvoiceId]">
           <span
             nz-icon
             nzType="eye"
             nzTheme="outline"
             style="color: grey"
           ></span>
-        </a>
-        <nz-divider nzType="vertical"></nz-divider>
-        <a [routerLink]="['/invoices/edit', invoice.customerInvoiceId]">
+      </a>
+      <nz-divider nzType="vertical"></nz-divider>
+      <a [routerLink]="['/invoices/edit', invoice.customerInvoiceId]">
           <span
             nz-icon
             nzType="edit"
             nzTheme="outline"
             style="color: orange"
           ></span>
-        </a>
-        <nz-divider nzType="vertical"></nz-divider>
-        <a (click)="showDeleteConfirm(invoice)">
+      </a>
+      <nz-divider nzType="vertical"></nz-divider>
+      <a (click)="showDeleteConfirm(invoice)">
           <span
             nz-icon
             nzType="delete"
             nzTheme="outline"
             style="color: red"
           ></span>
-        </a>
-      </td>
-    </tr>
+      </a>
+    </td>
+  </tr>
   </tbody>
 </nz-table>

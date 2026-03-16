@@ -1,0 +1,56 @@
+<nz-page-header class="site-page-header" (nzBack)="onBack()" nzBackIcon nzTitle="Item Groups List">
+  <nz-page-header-extra>
+    <nz-space>
+      <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+        <input type="text" [(ngModel)]="searchText" nz-input placeholder="Search Title" />
+      </nz-input-group>
+      <ng-template #suffixIconButton>
+        <button nz-button nzSearch (click)="onSearch()">
+          <span nz-icon nzType="search"></span>
+        </button>
+      </ng-template>
+      <nz-divider nzType="vertical"></nz-divider>
+      <button nz-button nzType="dashed" (click)="loadDataFromServer(pageIndex, pageSize, null, null, [], null)">
+        <span nz-icon nzType="redo"></span>
+        Refresh
+      </button>
+      <nz-divider nzType="vertical"></nz-divider>
+      <button *nzSpaceItem nz-button nzType="primary" [routerLink]="['/groups/add']"><span nz-icon nzType="plus"></span>Add Group</button>
+    </nz-space>
+  </nz-page-header-extra>
+</nz-page-header>
+
+<nz-table
+  #basicTable
+  [nzData]="listOfGroups"
+  [nzFrontPagination]="false"
+  [nzLoading]="loading"
+  [nzTotal]="total"
+  [nzPageSize]="pageSize"
+  [nzPageIndex]="pageIndex"
+  (nzQueryParams)="onQueryParamsChange($event)"
+  nzBordered
+>
+  <thead>
+    <tr>
+      <th nzColumnKey="title" nzShowSort>Title</th>
+      <th nzColumnKey="description" nzShowSort>Description</th>
+      <th nzColumnKey="actions">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let group of listOfGroups">
+      <td>{{ group.title }}</td>
+      <td>{{ group.description }}</td>
+      <td>
+        <a [routerLink]="['/groups/edit', group.itemGroupId]">
+          <span nz-icon nzType="edit" nzTheme="outline" style="color: orange;"></span>
+        </a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a (click)="showDeleteConfirm(group)">
+          <span nz-icon nzType="delete" nzTheme="outline" style="color: red"></span>
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

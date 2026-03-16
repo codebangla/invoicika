@@ -31,6 +31,12 @@ const routes: Routes = [
       import('./pages/item/item.module').then((m) => m.ItemModule),
   },
   {
+    path: 'groups',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('./pages/group/group.module').then((m) => m.GroupModule),
+  },
+  {
     path: 'vat',
     canActivate: [AuthGuard],
     loadChildren: () =>
